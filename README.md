@@ -18,11 +18,11 @@ Or install it yourself as:
 
 ## Usage
 
-In order to use this you will have to have an active account with [This link](www.five9.com).
+In order to use this you will have to have an active account with [five9](www.five9.com).
 	
-	agent_stats = Five9::AgentStats.new("exampleuser","examplepassword","https://api.five9.com/wssupervisor/SupervisorWebService?wsdl&user=exampleuser")
+	agent_stats = Five9::AgentStats.new("exampleuser","examplepassword")
 	agent_stats.setSessionParams(session={rolling_period: "Today", shift_start: 25200000, statistics_range: "CurrentDay", time_zone: -21600000}) //the numbers are in milliseconds.
-	stats = a.getStatistics(["Total Calls","Avg Handle Time"])
+	stats = a.getStatistics(["Total Calls","Avg Handle Time"])//leave empty to return all stats.
 	updated_stats = a.getStatisticsUpdate
 
 
