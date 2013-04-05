@@ -7,8 +7,8 @@ Gem::Specification.new do |gem|
   gem.name          = "five9"
   gem.version       = Five9::VERSION
   gem.authors       = ["David Hahn"]
-  gem.email         = ["davidmichaelhahn@gmail.com"]
-  gem.description   = %q{TODO: Write a gem description}
+  gem.email         = ["dhahn@ctatechs.com"]
+  gem.description   = %q{Rubygem integration with five9 API}
   gem.summary       = %q{TODO: Write a gem summary}
   gem.homepage      = ""
 
