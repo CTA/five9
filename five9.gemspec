@@ -9,7 +9,7 @@ Gem::Specification.new do |gem|
   gem.authors       = ["David Hahn"]
   gem.email         = ["dhahn@ctatechs.com"]
   gem.description   = %q{Rubygem integration with five9 API}
-  gem.summary       = %q{TODO: Write a gem summary}
+  gem.summary       = %q{Write a gem summary}
   gem.homepage      = ""
 
   gem.files         = `git ls-files`.split($/)
