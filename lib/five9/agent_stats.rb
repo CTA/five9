@@ -1,7 +1,7 @@
 module Five9
 	class AgentStats < Statistics
-		def initialize(username,password,given_wsdl)
-			super(username,password,given_wsdl)
+		def initialize(username,password)
+			super(username,password)
 		end
 
 		def getStatistics(columns=[])
