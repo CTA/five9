@@ -1,15 +1,17 @@
 module Five9
 	class AgentStats < Statistics
+ 		attr_accessor :stats
 		def initialize(username,password)
+			@stats = nil
 			super(username,password)
 		end
 
 		def getStatistics(columns=[])
-			super("AgentStatistics",columns)
+			@stats = super("AgentStatistics",columns)
 		end
 
 		def getStatisticsUpdate(long_polling_timeout=10000)
-			super("AgentStatistics",long_polling_timeout)
+			super("AgentStatistics", "Username", long_polling_timeout)
 		end
 	end
 end

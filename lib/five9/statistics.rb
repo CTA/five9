@@ -21,7 +21,7 @@ module Five9
 			return stats
 		end
 
-		def getStatisticsUpdate(statistic_type,long_polling_timeout=10000)
+		def getStatisticsUpdate(statistic_type, object_name,long_polling_timeout=10000)
 			begin
 				prev_timestamp = @last_working_timestamp
 				response = @client.request :ser, :getStatisticsUpdate, body: {statisticType: statistic_type, previousTimestamp: prev_timestamp, longPollingTimeout: long_polling_timeout}
@@ -30,6 +30,7 @@ module Five9
 				prev_timestamp = data[0][:get_statistics_update_response][:return][:last_timestamp]
 				stats = data[0][:get_statistics_update_response][:return][:data_update]
 				@last_working_timestamp = prev_timestamp
+				updateStats(stats,object_name)
 			rescue TypeError => e
 				p e
 				p e.backtrace if !e.message.include?("No Updated Statistics")
@@ -37,5 +38,17 @@ module Five9
 			end
 			return stats
 		end
+
+		private
+			def updateStats(updated_stats,object_name)
+				if updated_stats.class == Hash
+					@stats.each {|stat| stat[updated_stats[:column_name]] = updated_stats[:column_value] if updated_stats[:object_name] == stat[object_name]}
+				elsif updated_stats.class == Array
+					updated_stats.each do |updated_stat|	
+						@stats.each {|stat| stat[updated_stat[:column_name]] = updated_stat[:column_value] if updated_stat[:object_name] == stat[object_name]}
+					end
+				end
+				updated_stats
+			end
 	end
 end
