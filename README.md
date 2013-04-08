@@ -21,9 +21,11 @@ Or install it yourself as:
 In order to use this you will have to have an active account with [five9](www.five9.com).
 	
 	agent_stats = Five9::AgentStats.new("exampleuser","examplepassword")
-	agent_stats.setSessionParams(session={rolling_period: "Today", shift_start: 25200000, statistics_range: "CurrentDay", time_zone: -21600000}) //the numbers are in milliseconds.
-	stats = a.getStatistics(["Total Calls","Avg Handle Time"])//leave empty to return all stats.
-	updated_stats = a.getStatisticsUpdate
+	agent_stats.setSessionParams(session={rolling_period: "Today", shift_start: 25200000, statistics_range: "CurrentDay", time_zone: -21600000}) #the numbers are in milliseconds.
+	agent_stats.getStatistics(["Total Calls","Avg Handle Time"]) #leave empty to return all stats.
+	puts agent_stats.stats
+	agent_stats.getStatisticsUpdate
+	puts agent_stats.stats
 
 
 For more details check out [Five9's API](http://www.five9.com/for_developers/call-center-cloud-computing.htm) for more details.
