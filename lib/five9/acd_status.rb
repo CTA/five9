@@ -1,9 +1,9 @@
 module Five9
 	class AcdStatus < Statistics
 		attr_accessor :stats
-		def initialize(username,password)
+		def initialize(username,password,timeout=300)
 			@stats = nil
-			super(username,password)
+			super(username,password,timeout)
 		end
 
 		def getStatistics(columns=[])

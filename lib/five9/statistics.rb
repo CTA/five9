@@ -1,7 +1,7 @@
 module Five9
 	class Statistics < Base
-		def initialize(username,password)
-			super(username,password,"https://api.five9.com/wssupervisor/SupervisorWebService?wsdl&user=")
+		def initialize(username,password,timeout=300)
+			super(username,password,"https://api.five9.com/wssupervisor/SupervisorWebService?wsdl&user=",timeout)
 			@last_working_timestamp = nil
 		end
 
