@@ -6,12 +6,12 @@ module Five9
 		end
 
 		def setSessionParams(options)
-			@client.request :ser, :setSessionParameters, body: {viewSettings: {rollingPeriod: options[:rolling_period], shiftStart: options[:shift_start], statisticsRange: options[:statistics_range],timeZone: options[:time_zone]}}
+			@client.call(:set_session_parameters,  message: {viewSettings: {rollingPeriod: options[:rolling_period], shiftStart: options[:shift_start], statisticsRange: options[:statistics_range],timeZone: options[:time_zone]}})
 		end
 
 		def getStatistics(statistic_type,columns=[])
 			stats = []
-			response =  @client.request :getStatistics, body: {statisticType: statistic_type, columnNames: {values: { data: columns}}}
+			response =  @client.call(:get_statistics, message: {statisticType: statistic_type, columnNames: {values: { data: columns}}})
 			data = response.to_array
 			@last_working_timestamp = data[0][:get_statistics_response][:return][:timestamp]
 			headers = data[0][:get_statistics_response][:return][:columns][:values][:data]
@@ -24,7 +24,7 @@ module Five9
 		def getStatisticsUpdate(statistic_type, object_name,long_polling_timeout=10000)
 			begin
 				prev_timestamp = @last_working_timestamp
-				response = @client.request :ser, :getStatisticsUpdate, body: {statisticType: statistic_type, previousTimestamp: prev_timestamp, longPollingTimeout: long_polling_timeout}
+				response = @client.call(:getStatisticsUpdate, message: {statisticType: statistic_type, previousTimestamp: prev_timestamp, longPollingTimeout: long_polling_timeout})
 				data = response.to_array
 				raise TypeError, "No Updated Statistics" if data[0][:get_statistics_update_response][:return].nil?
 				prev_timestamp = data[0][:get_statistics_update_response][:return][:last_timestamp]
