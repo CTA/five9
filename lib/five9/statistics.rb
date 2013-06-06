@@ -24,7 +24,7 @@ module Five9
 		def getStatisticsUpdate(statistic_type, object_name,long_polling_timeout=10000)
 			begin
 				prev_timestamp = @last_working_timestamp
-				response = @client.call(:getStatisticsUpdate, message: {statisticType: statistic_type, previousTimestamp: prev_timestamp, longPollingTimeout: long_polling_timeout})
+				response = @client.call(:get_statistics_update, message: {statisticType: statistic_type, previousTimestamp: prev_timestamp, longPollingTimeout: long_polling_timeout})
 				data = response.to_array
 				raise TypeError, "No Updated Statistics" if data[0][:get_statistics_update_response][:return].nil?
 				prev_timestamp = data[0][:get_statistics_update_response][:return][:last_timestamp]
