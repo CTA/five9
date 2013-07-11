@@ -10,7 +10,7 @@ Gem::Specification.new do |gem|
   gem.email         = ["dhahn@ctatechs.com"]
   gem.description   = %q{Rubygem integration with five9 API}
   gem.summary       = %q{Write a gem summary}
-  gem.homepage      = "https://github.com/CorporateTechnologyAdvantage/five9"
+  gem.homepage      = "https://github.com/CTA/five9"
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }

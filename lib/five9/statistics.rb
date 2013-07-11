@@ -11,8 +11,7 @@ module Five9
 
 		def getStatistics(statistic_type,columns=[])
 			stats = []
-			response =  @client.call(:get_statistics, message: {statisticType: statistic_type, columnNames: {values: { data: columns}}})
-			data = response.to_array
+			data =  @client.call(:get_statistics, message: {statisticType: statistic_type, columnNames: {values: { data: columns}}}).to_array
 			@last_working_timestamp = data[0][:get_statistics_response][:return][:timestamp]
 			headers = data[0][:get_statistics_response][:return][:columns][:values][:data]
 			data[0][:get_statistics_response][:return][:rows].each do |row|
@@ -23,13 +22,10 @@ module Five9
 
 		def getStatisticsUpdate(statistic_type, object_name,long_polling_timeout=10000)
 			begin
-				prev_timestamp = @last_working_timestamp
-				response = @client.call(:get_statistics_update, message: {statisticType: statistic_type, previousTimestamp: prev_timestamp, longPollingTimeout: long_polling_timeout})
-				data = response.to_array
+				data = @client.call(:get_statistics_update, message: {statisticType: statistic_type, previousTimestamp: @last_working_timestamp, longPollingTimeout: long_polling_timeout}).to_array
 				raise TypeError, "No Updated Statistics" if data[0][:get_statistics_update_response][:return].nil?
-				prev_timestamp = data[0][:get_statistics_update_response][:return][:last_timestamp]
 				stats = data[0][:get_statistics_update_response][:return][:data_update]
-				@last_working_timestamp = prev_timestamp
+				@last_working_timestamp = data[0][:get_statistics_update_response][:return][:last_timestamp]
 				updateStats(stats,object_name)
 			rescue TypeError => e
 				p e
