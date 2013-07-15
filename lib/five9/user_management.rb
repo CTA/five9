@@ -1,16 +1,16 @@
 module Five9
-	class UserManagement < Base
+  class UserManagement < Base
     # This class is essentially a cut-paste of the User Management methods
     # from the Five9 API. Arguments to the methods should be hashes of the
     # data values required in the API, unless otherwise specified.
 
-		def initialize(adminuser, password)
+    def initialize(adminuser, password)
       # arguments should be strings
-			super(adminuser, password,
-				"https://api.five9.com/wsadmin/v2/AdminWebService?wsdl&user=")
-		end
+      super(adminuser, password,
+      "https://api.five9.com/wsadmin/v2/AdminWebService?wsdl&user=")
+    end
 
-		def create_user(args = {})
+    def create_user(args = {})
       # Use this method to create a user. 
       # An exception is thrown if the user already exists, if the limit number of users is reached, or if user attributes are invalid.
       begin
@@ -19,7 +19,7 @@ module Five9
         puts error.to_s.inspect
         return false
       end
-		end
+    end
 
     def delete_user(username)
       # Use this method to delete the specified user. 
@@ -124,5 +124,5 @@ module Five9
           return false
         end
       end
-	end
+  end
 end
