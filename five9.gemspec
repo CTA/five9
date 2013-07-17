@@ -11,7 +11,7 @@ Gem::Specification.new do |gem|
   gem.description   = %q{Rubygem integration with five9 API}
   gem.summary       = %q{Write a gem summary}
   gem.homepage      = "https://github.com/CTA/five9"
-
+  gem.license       = "MIT"
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
