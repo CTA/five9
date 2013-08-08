@@ -38,8 +38,10 @@ module Five9
         # username_pattern should be a regular expression.
         # If omitted or equal to an empty string, all objects are returned.
         # For example, a pattern may be the first characters of the user name.
+      # Returns a hash or an array of hashes for multiple results
       begin
-        @client.call :get_users_general_info, message: { userNamePattern: username_pattern }
+        response = @client.call :get_users_general_info, message: { userNamePattern: username_pattern }
+        return response.to_hash[:get_users_general_info_response][:return]
       rescue => error
         puts error.to_s.inspect
         return false
@@ -52,7 +54,8 @@ module Five9
       # for each user name that matches a pattern.
       # username_pattern should be a regular expression
       begin
-        @client.call :get_users_info, message: { userNamePattern: username_pattern }      
+        response = @client.call :get_users_info, message: { userNamePattern: username_pattern }      
+        return response.to_hash[:get_users_info_response][:return]
       rescue => error
         puts error.to_s.inspect
         return false
@@ -84,34 +87,16 @@ module Five9
     def add_user_skill(user_skill)
       # user_skill is a userSkill hash 
       affect_user_skill(:user_skill_add, user_skill)
-      # begin
-      #   @client.call :userSkillAdd, message: { userSkill: user_skill }    
-      # rescue => error
-      #   puts error.to_s.inspect
-      #   return false
-      # end
     end
 
     def modify_user_skill(user_skill)
       # user_skill is a userSkill hash 
       affect_user_skill(:user_skill_modify, user_skill)
-      # begin
-      #   @client.call :userSkillModify, message: { userSkill: user_skill }
-      # rescue => error
-      #   puts error.to_s.inspect
-      #   return false
-      # end
     end
 
     def remove_user_skill(user_skill)
       # user_skill is a userSkill hash 
       affect_user_skill(:user_skill_remove, user_skill)
-      # begin
-      #   @client.call :userSkillRemove, message: { userSkill: user_skill }
-      # rescue => error
-      #   puts error.to_s.inspect
-      #   return false
-      # end
     end
 
     private
