@@ -1,5 +1,5 @@
 module Five9
-	class UserManagement < Base
+	class Provision < Base
     # This class is essentially a cut-paste of the User Management methods
     # from the Five9 API. Arguments to the methods should be hashes of the
     # data values required in the API, unless otherwise specified.
