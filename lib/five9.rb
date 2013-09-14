@@ -1,3 +1,4 @@
+require "accessible_hash"
 require "five9/version"
 require "five9/base"
 require "five9/provision"
