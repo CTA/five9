@@ -7,7 +7,8 @@ module Five9
       @client = Savon.client do
         wsdl "#{given_wsdl}#{username}"
         basic_auth [username, password]
-      end
-    end
-  end
+        log false
+			end
+		end
+	end
 end

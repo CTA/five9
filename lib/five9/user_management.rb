@@ -1,128 +1,101 @@
 module Five9
-  class UserManagement < Base
-    # This class is essentially a cut-paste of the User Management methods
-    # from the Five9 API. Arguments to the methods should be hashes of the
-    # data values required in the API, unless otherwise specified.
-
-    def initialize(adminuser, password)
-      # arguments should be strings
-      super(adminuser, password,
-      "https://api.five9.com/wsadmin/v2/AdminWebService?wsdl&user=")
-    end
-
-    def create_user(args = {})
-      # Use this method to create a user. 
-      # An exception is thrown if the user already exists, if the limit number of users is reached, or if user attributes are invalid.
-      begin
-        @client.call :create_user, message: args
-      rescue => error
-        puts error.to_s.inspect
-        return false
+	module UserManagement
+    class << self
+      def establish_connection adminuser, password
+        @client = Base.new(adminuser, password,
+          "https://api.five9.com/wsadmin/v2/AdminWebService?wsdl&user=")
+            .instance_variable_get :@client
+        @connected = true
       end
-    end
 
-    def delete_user(username)
-      # Use this method to delete the specified user. 
-      # An exception is thrown if the user does not exist.
-      # username is a string
-      begin
-        @client.call :delete_user, message: { user_name: username }
-      rescue => error
-        puts error.to_s.inspect
-        return false
+      def connected?
+        @connected
       end
-    end
 
-    def get_users_general_info(username_pattern = nil)
-      # Use this method to obtain general information about each user name that matches a pattern.
-        # username_pattern should be a regular expression.
-        # If omitted or equal to an empty string, all objects are returned.
-        # For example, a pattern may be the first characters of the user name.
-      begin
-        @client.call :get_users_general_info, message: { userNamePattern: username_pattern }
-      rescue => error
-        puts error.to_s.inspect
-        return false
-      end
-    end
-
-    def get_users_info(username_pattern = nil)
-      # Use this method to obtain information about roles and skills 
-      # in addition to general information for the user, 
-      # for each user name that matches a pattern.
-      # username_pattern should be a regular expression
-      begin
-        @client.call :get_users_info, message: { userNamePattern: username_pattern }      
-      rescue => error
-        puts error.to_s.inspect
-        return false
-      end
-    end
-
-    def modify_user(args = {})
-      # Use this method to modify user attributes
-      # args may include userGeneralInfo, rolesToSet, and rolesToRemove
-      begin
-        @client.call :modify_user, message: args
-      rescue => error
-        puts error.to_s.inspect
-        return false
-      end
-    end
-
-    def modify_user_canned_reports(args = {})
-      # Use this method to modify the list of canned reports associated with a specific user.
-      # args may incldue user, cannedReportsToAdd, and cannedReportsToRemove
-      begin
-        @client.call :modify_user_canned_reports, message: args
-      rescue => error
-        puts error.to_s.inspect
-        return false
-      end
-    end
-
-    def add_user_skill(user_skill)
-      # user_skill is a userSkill hash 
-      affect_user_skill(:user_skill_add, user_skill)
-      # begin
-      #   @client.call :userSkillAdd, message: { userSkill: user_skill }    
-      # rescue => error
-      #   puts error.to_s.inspect
-      #   return false
-      # end
-    end
-
-    def modify_user_skill(user_skill)
-      # user_skill is a userSkill hash 
-      affect_user_skill(:user_skill_modify, user_skill)
-      # begin
-      #   @client.call :userSkillModify, message: { userSkill: user_skill }
-      # rescue => error
-      #   puts error.to_s.inspect
-      #   return false
-      # end
-    end
-
-    def remove_user_skill(user_skill)
-      # user_skill is a userSkill hash 
-      affect_user_skill(:user_skill_remove, user_skill)
-      # begin
-      #   @client.call :userSkillRemove, message: { userSkill: user_skill }
-      # rescue => error
-      #   puts error.to_s.inspect
-      #   return false
-      # end
-    end
-
-    private
-
-      def affect_user_skill(affect, user_skill)
-        begin
-          @client.call affect, message: { userSkill: user_skill }
-        rescue => error
-          puts error.to_s.inspect
-          return false
+      def create_user user_info = {}
+        validate_connection do
+          response = @client.call :create_user, { message: {
+            userInfo: user_info } }
+          process_return_hash response, :create_user_response
         end
       end
-  end
+
+      def delete_user username
+        validate_connection do
+          response = @client.call :delete_user, message: { user_name: username }
+          process_return_hash response, :delete_user_response
+        end
+      end
+
+      def get_users_general_info username_pattern = nil
+        validate_connection do
+          response = @client.call :get_users_general_info,
+            message: { userNamePattern: username_pattern }
+          process_return_hash response, :get_users_general_info_response
+        end
+      end
+
+      def get_users_info username_pattern = nil
+        validate_connection do
+          response = @client.call :get_users_info,
+            message: { userNamePattern: username_pattern }      
+          process_return_hash response, :get_users_info_response
+        end
+      end
+
+      def modify_user args
+        validate_connection do
+          response = @client.call :modify_user, message: args
+          process_return_hash response, :modify_user_response
+        end
+      end
+
+      def user_skill_add skill
+        validate_connection do
+          response = @client.call :user_skill_add, message: skill
+          process_return_hash response, :user_skill_add_response
+        end
+      end
+
+      def user_skill_modify skill
+        validate_connection do
+          response = @client.call :user_skill_modify, message: skill
+          process_return_hash response, :user_skill_modify_response
+        end
+      end
+
+      def user_skill_remove skill
+        validate_connection do
+          response = @client.call :user_skill_remove, message: skill
+          process_return_hash response, :user_skill_remove_response
+        end
+      end
+
+      private
+        def process_return_hash response, method_response_key
+          response_hash = response.to_hash
+          if response_hash[method_response_key].class == Hash
+            unless response_hash[method_response_key][:return].class == NilClass
+              return response_hash[method_response_key][:return]
+            else
+              return response_hash[method_response_key]
+            end
+          else
+            return response_hash
+          end
+        end
+
+        def validate_connection &block
+          if @connected
+            begin
+              block.call if block
+            rescue Wasabi::Resolver::HTTPError
+              raise "Something went wrong! Please insure the connection is established with the proper credentials."
+            end
+          else
+            raise "Connection to Five9 not established!"
+          end
+        end
+    end
+	end
 end
