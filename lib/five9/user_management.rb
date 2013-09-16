@@ -71,67 +71,6 @@ module Five9
         end
       end
 
-      def test_create_user
-        create_user({ 
-          # userInfo: {
-            generalInfo: {
-              canChangePassword: true,
-              "EMail" => "superdave@ctatechs.com",
-              firstName: "Dave",
-              # fullName: "Dave Kent",
-              lastName: "Kent",
-              mustChangePassword: true,
-              password: "Lemon$",
-              startDate: Time.new,
-              userName: "superdave@ctatechs.com",
-              userProfileName: "Agent"
-            },
-            roles: {
-              agent: {
-                alwaysRecorded: true,
-                attachVmToEmail: true,
-              },
-                sendEmailOnVm: true
-            },
-            skills: {
-              level: "2",
-              skillName: "IHS Skill Group",
-              userName: "superdave@ctatechs.com"
-            }
-          # }
-        })
-      end
-
-      def test_modify_user
-        modify_user( # { 
-            userGeneralInfo: {
-              # canChangePassword: true,
-              "EMail" => "superdave@ctatechs.com",
-              # firstName: "Dave",
-              # fullName: "David Kent",
-              # lastName: "Kent",
-              # mustChangePassword: true,
-              # password: "Lemon$",
-              # startDate: Time.new,
-              userName: "superdave@ctatechs.com",
-              # userProfileName: "Agent"
-            # },
-            # roles: {
-            #   agent: {
-            #     alwaysRecorded: true,
-            #     attachVmToEmail: true,
-            #   },
-            #     sendEmailOnVm: true
-            # },
-            # skills: {
-            #   level: "2",
-            #   skillName: "IHS Skill Group",
-            #   userName: "superdave@ctatechs.com"
-            # }
-          }
-        )
-      end
-
       private
         def process_return_hash response, method_response_key
           response_hash = response.to_hash
