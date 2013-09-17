@@ -1,5 +1,5 @@
 module Five9
-	module UserManagement
+  module UserManagement
     class << self
       def establish_connection adminuser, password
         @client = Base.new(adminuser, password,
@@ -97,5 +97,5 @@ module Five9
           end
         end
     end
-	end
+  end
 end
