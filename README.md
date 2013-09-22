@@ -1,6 +1,6 @@
 # Five9
 
-This RubyGem is a ruby integration for the five9 API. Currently, it is only partly integrated with the statistics API. The end goal is to have a full integration.
+This RubyGem is a ruby integration for the five9 API. Currently, it is only partly integrated with the statistics and user management API. The end goal is to have a full integration.
 
 ## Installation
 
